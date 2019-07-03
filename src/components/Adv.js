@@ -21,14 +21,14 @@ class Adv extends React.Component {
     if (isNecessary && !active && pristine && !touched) {
       return "Обязательное поле";
     }
+    if (error) {
+      return error;
+    }
     if (!active && pristine && touched) {
       return "Заполните поле";
     }
     if (!active && !pristine && touched) {
       return "Заполнено";
-    }
-    if (error) {
-      return error;
     }
   }
 
@@ -54,6 +54,19 @@ class Adv extends React.Component {
           <label>Не более {maxCharacters} символов </label>
         )}
         <input {...input} placeholder={placeholder} autoComplete="off" />
+      </div>
+    );
+  };
+
+  renderSelect = ({ label }) => {
+    return (
+      <div>
+        <label>{label}</label>
+        <select className="ui search dropdown">
+          <option value="М">Москва</option>
+          <option value="Х">Хабаровск</option>
+          <option value="Ч">Чебоксары</option>
+        </select>
       </div>
     );
   };
@@ -109,7 +122,7 @@ class Adv extends React.Component {
           isNecessary
           placeholder="+7 (___) ___ - __ - __"
         />
-        <Field name="city" component={this.renderInput} label="Город" />
+        <Field name="city" component={this.renderSelect} label="Город" />
         <input
           style={{ display: "none" }}
           className="ui button"
