@@ -1,10 +1,12 @@
 import React from "react";
-import Adv from "./Adv";
+import AdvForm from "./AdvForm";
+import AdvList from "./AdvList";
 
 const App = () => {
   return (
     <div className="ui container">
-      <Adv>124</Adv>
+      <AdvForm />
+      <AdvList />
     </div>
   );
 };
