@@ -8,9 +8,10 @@ export const handleFormSubmit = values => {
   };
 };
 
-export const handleAdvDelete = values => {
-  console.log("from action", values);
+export const handleAdvDelete = title => {
+  console.log("from action", title);
   return {
-    type: ADV_DELETE
+    type: ADV_DELETE,
+    payload: title
   };
 };

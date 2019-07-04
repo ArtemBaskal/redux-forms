@@ -4,15 +4,15 @@ import { connect } from "react-redux";
 
 class AdvList extends React.Component {
   render() {
-    console.log(localStorage);
+    // console.log(localStorage);
     return (
       <div>
         <h1>Объявление</h1>
         {this.props.submittedForms.map(form => {
           return (
             <Adv
-              key={form.title}
-              title={form.title}
+              key={form.title || null}
+              title={form.title || null}
               description={form.description || null}
               phone={form.phone}
               city={form.city || null}

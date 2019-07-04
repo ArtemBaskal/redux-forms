@@ -1,9 +1,13 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
-import cities from "../apis/cities.json";
+import { Field, FieldArray, reduxForm } from "redux-form";
 import { handleFormSubmit } from "../actions";
+import cities from "../apis/cities.json";
+import Adv from "./Adv";
+import { connect } from "react-redux";
+import "./AdvForm.css";
 
 class AdvForm extends React.Component {
+  //TODO - заменить на конструктор
   state = {
     selectedFile: null
   };
@@ -49,15 +53,29 @@ class AdvForm extends React.Component {
     placeholder,
     meta
   }) => {
-    console.log(meta);
+    console.log(this);
     return (
-      <div className={"field " + this.hasErrorClass(meta)}>
-        <label>{label}</label>
-        <label>{this.renderHint(isNecessary, meta)}</label>
+      <div className={`field + ${label} + ${this.hasErrorClass(meta)}`}>
+        <label className="form-label label-font">{label}</label>
+        <label className="label-font label-hint">
+          {this.renderHint(isNecessary, meta)}
+        </label>
         {maxCharacters && !meta.active && meta.pristine && (
-          <label>Не более {maxCharacters} символов </label>
+          <label className="label-font char-limit">
+            Не более {maxCharacters} символов{" "}
+          </label>
         )}
-        <input {...input} placeholder={placeholder} autoComplete="off" />
+        {label !== "Текст объявления" && (
+          <input
+            {...input}
+            placeholder={placeholder}
+            autoComplete="off"
+            className="form-input label-font"
+          />
+        )}
+        {label === "Текст объявления" && (
+          <textarea className="textarea-input" {...input} />
+        )}
       </div>
     );
   };
@@ -67,8 +85,8 @@ class AdvForm extends React.Component {
   renderSelect = ({ label, children }) => {
     return (
       <div>
-        <label>{label}</label>
-        <select className="ui search dropdown">{children}</select>
+        <label className="label-font">{label}</label>
+        <select className="ui search dropdown-cities">{children}</select>
       </div>
     );
   };
@@ -100,24 +118,88 @@ class AdvForm extends React.Component {
     });
   };
 
-  render() {
-    const { handleSubmit, submitting, valid } = this.props;
-    console.log(this.props);
+  renderMembers = ({ fields, meta: { touched, error, submitFailed } }) => {
+    // ...rest
+    // console.log("props inside renderMembers", rest);
+    // return <div>members</div>;
+    console.log(this);
     return (
-      <form onSubmit={handleSubmit} className="ui form error">
-        <h1>Подать объявление</h1>
+      <div>
+        <div>
+          <button
+            type="submit"
+            className="ui button primary"
+            onClick={() => fields.push()}
+          >
+            Подать
+          </button>
+          {(touched || submitFailed) && error && <span>{error}</span>}
+        </div>
+        {fields.map((member, index) => (
+          <div key={index}>
+            <button
+              type="button"
+              title="Remove Member"
+              onClick={() => fields.remove(index)}
+            >
+              Удалить
+            </button>
+            <button>Редактировать</button>
+            <h4>Объявление #{index + 1}</h4>
+            {/* <Adv
+                key={member.title || "default"}
+                title={member.title || "default"}
+                description={member.description || null}
+                phone={member.phone || "default"}
+                city={member.city || null}
+                src={member.src || null}
+              /> */}
+            {/* <Field
+              name={`${member}.firstName`}
+              type="text"
+              component={() => (
+                <div>
+                  Adv
+                  <Adv title="title" />
+                </div>
+              )}
+              label="First Name"
+            /> */}
+            {/* <Field
+                name={`${member}.lastName`}
+                type="text"
+                component={renderField}
+                label="Last Name"
+              /> */}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  render() {
+    const { handleSubmit, reset, submitting, valid } = this.props;
+    // console.log(this.props);
+    return (
+      <form onSubmit={handleSubmit} className="ui form-submit error">
+        <h1 className="main-title">Подать объявление</h1>
         <Field
           name="title"
           component={this.renderInput}
           label="Заголовок"
           isNecessary
           maxCharacters={140}
+          type="text"
         />
         <Field
           name="description"
-          component={this.renderInput}
+          component={
+            // "textarea"
+            this.renderInput
+          }
           label="Текст объявления"
           maxCharacters={300}
+          type="text"
         />
         <Field
           name="phone"
@@ -125,11 +207,17 @@ class AdvForm extends React.Component {
           label="Телефон"
           isNecessary
           placeholder="+7 (___) ___ - __ - __"
+          type="text"
         />
-        <Field name="city" component={this.renderSelect} label="Город">
+        <Field
+          name="city"
+          component={this.renderSelect}
+          label="Город"
+          type="text"
+        >
           {" "}
           {cities.map(city => (
-            <option key={city.name + " " + city.subject} value={city.name}>
+            <option key={city.name + " " + city.subject} value={city.name} className="city-select">
               {city.name}
             </option>
           ))}
@@ -144,38 +232,50 @@ class AdvForm extends React.Component {
         />
 
         <img
-          style={{ width: "150px", height: "150px", display: "flex" }}
+          className="img-adv"
           src={this.state.selectedFile}
         />
         <button
-          className="ui button"
+          className="ui button-photo"
           onClick={e => {
             e.preventDefault();
             return this.fileInput.click();
           }}
         >
-          Выбрать фото
+          Прикрепить фото
         </button>
         <button
           type="submit"
           disabled={!valid || submitting}
-          className="ui button primary"
+          className="ui button-submit"
         >
           Подать
         </button>
+        {/* <FieldArray name="members" component={this.renderMembers} /> */}
       </form>
     );
   }
 }
 
+// const renderField = ({ input, label, type, meta: { touched, error } }) => (
+//   <div>
+//     <label>{label}</label>
+//     <div>
+//       <input {...input} type={type} />
+//       {touched && error && <span>{error}</span>}
+//     </div>
+//   </div>
+// );
+
 const onSubmit = (values, dispatch) => {
+  // console.log(values);
   alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
   return dispatch(handleFormSubmit(values));
 };
 
 const validate = formValues => {
   const errors = {};
-  console.log(formValues);
+  // console.log(formValues);
 
   if (formValues.title && formValues.title.length > 140) {
     errors.title = "Не более 140 символов";
@@ -197,5 +297,11 @@ const validate = formValues => {
 };
 
 //.trim()
+
+const mapStateToProps = state => {
+  return { submittedForms: state.submitForm };
+};
+
+AdvForm = connect(mapStateToProps)(AdvForm);
 
 export default reduxForm({ form: "inputForm", onSubmit, validate })(AdvForm);
