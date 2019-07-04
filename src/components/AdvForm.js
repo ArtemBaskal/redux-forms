@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-
-const cities = ["Москва", "Хабаровск", "Чебоксары"];
+import cities from "../apis/cities.json";
+import { handleFormSubmit } from "../actions";
 
 class AdvForm extends React.Component {
   state = {
@@ -18,8 +18,10 @@ class AdvForm extends React.Component {
     }
   }
 
+  //TODO - перенести всю валидацию в validate
+
   renderHint(isNecessary, { active, pristine, touched, error }) {
-    console.log(error);
+    // console.log(error);
     if (isNecessary && !active && pristine && !touched) {
       return "Обязательное поле";
     }
@@ -60,8 +62,9 @@ class AdvForm extends React.Component {
     );
   };
 
+  //TODO - сделать элемент Input и в нём свойство errorMessage
+
   renderSelect = ({ label, children }) => {
-    console.log(children);
     return (
       <div>
         <label>{label}</label>
@@ -98,15 +101,10 @@ class AdvForm extends React.Component {
   };
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, valid } = this.props;
     console.log(this.props);
     return (
-      <form
-        onSubmit={handleSubmit(values =>
-          alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
-        )}
-        className="ui form error"
-      >
+      <form onSubmit={handleSubmit} className="ui form error">
         <h1>Подать объявление</h1>
         <Field
           name="title"
@@ -131,8 +129,8 @@ class AdvForm extends React.Component {
         <Field name="city" component={this.renderSelect} label="Город">
           {" "}
           {cities.map(city => (
-            <option key={city} value={city}>
-              {city}
+            <option key={city.name + " " + city.subject} value={city.name}>
+              {city.name}
             </option>
           ))}
         </Field>
@@ -160,7 +158,7 @@ class AdvForm extends React.Component {
         </button>
         <button
           type="submit"
-          disabled={submitting}
+          disabled={!valid || submitting}
           className="ui button primary"
         >
           Подать
@@ -169,6 +167,11 @@ class AdvForm extends React.Component {
     );
   }
 }
+
+const onSubmit = (values, dispatch) => {
+  alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+  return dispatch(handleFormSubmit(values));
+};
 
 const validate = formValues => {
   const errors = {};
@@ -185,11 +188,14 @@ const validate = formValues => {
   //const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
   const regExp = /^((\+7|7|8)+([0-9]){10})$/;
 
-  if (formValues.phone && !formValues.phone.toString().match(regExp)) {
-    errors.phone = "Неверный формат";
-  }
+  //DEV MODE
+  // if (formValues.phone && !formValues.phone.toString().match(regExp)) {
+  //   errors.phone = "Неверный формат";
+  // }
 
   return errors;
 };
 
-export default reduxForm({ form: "inputForm", validate })(AdvForm);
+//.trim()
+
+export default reduxForm({ form: "inputForm", onSubmit, validate })(AdvForm);

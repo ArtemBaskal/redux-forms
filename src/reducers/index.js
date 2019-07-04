@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
-import { reducer as reducerForm } from "redux-form";
-import replaceMe from "./replaceMe";
+import { reducer as formReducer } from "redux-form";
+import formSubmitReducer from "./formSubmitReducer";
 
-export default combineReducers({ form: reducerForm, replaceMe });
+export default combineReducers({
+  form: formReducer,
+  submitForm: formSubmitReducer
+});

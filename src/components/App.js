@@ -6,7 +6,8 @@ const App = () => {
   return (
     <div className="ui container">
       <AdvForm />
-      <AdvList />
+      <AdvList
+      />
     </div>
   );
 };

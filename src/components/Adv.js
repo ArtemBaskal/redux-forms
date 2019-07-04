@@ -2,7 +2,7 @@ import React from "react";
 
 class Adv extends React.Component {
   render() {
-    const { title, description, phone, city, src } = this.props;
+    const { title, description, phone, city, src, dispatch } = this.props;
     return (
       <div styles={{ display: "inline" }}>
         <div>{title}</div>
@@ -11,7 +11,20 @@ class Adv extends React.Component {
         <div>{city}</div>
         <img style={{ width: "300px" }} src={src} />
         <button>Редактировать</button>
-        <button>Удалить</button>
+        <button
+          onClick={() => {
+            console.log(this.props);
+
+            // dispatch(
+            //   handleFormSubmit()
+            //   {
+            //   type: "ADV_DELETE"
+            // }
+            // );
+          }}
+        >
+          Удалить
+        </button>
       </div>
     );
   }
