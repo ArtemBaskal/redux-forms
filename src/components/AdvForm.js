@@ -12,15 +12,15 @@ class AdvForm extends React.Component {
     selectedFile: null
   };
 
-  renderError({ error, touched }) {
-    if (touched && error) {
-      return (
-        <div className="ui error message">
-          <div className="header">{error}</div>
-        </div>
-      );
-    }
-  }
+  // renderError({ error, touched }) {
+  //   if (touched && error) {
+  //     return (
+  //       <div className="ui error message">
+  //         <div className="header">{error}</div>
+  //       </div>
+  //     );
+  //   }
+  // }
 
   //TODO - перенести всю валидацию в validate
 
@@ -40,9 +40,12 @@ class AdvForm extends React.Component {
     }
   }
 
-  hasErrorClass({ touched, dirty }) {
+  hasErrorClass({ touched, dirty, valid, active }) {
+    if (valid && !active && dirty && touched) return "filled";
+    if (!valid || touched) return "error";
+    if (valid && dirty) return "";
     if (dirty) return null;
-    if (touched) return "error";
+    return "";
   }
 
   renderInput = ({
@@ -53,24 +56,29 @@ class AdvForm extends React.Component {
     placeholder,
     meta
   }) => {
-    console.log(this);
     return (
-      <div className={`field + ${label} + ${this.hasErrorClass(meta)}`}>
+      <div className={`field ${label} ${this.hasErrorClass(meta) || ""}`}>
         <label className="form-label label-font">{label}</label>
-        <label className="label-font label-hint">
-          {this.renderHint(isNecessary, meta)}
-        </label>
-        {maxCharacters && !meta.active && meta.pristine && (
-          <label className="label-font char-limit">
-            Не более {maxCharacters} символов{" "}
+        <div className={`hint-rigth ${this.hasErrorClass(meta) || ""}`}>
+          <label
+            className={`label-hint-font ${
+              this.hasErrorClass(meta)
+            }`}
+          >
+            {this.renderHint(isNecessary, meta)}
           </label>
-        )}
+          {maxCharacters && !meta.active && meta.pristine && (
+            <label className=" char-limit">
+              Не более {maxCharacters} символов{" "}
+            </label>
+          )}
+        </div>
         {label !== "Текст объявления" && (
           <input
             {...input}
             placeholder={placeholder}
             autoComplete="off"
-            className="form-input label-font"
+            className="form-input"
           />
         )}
         {label === "Текст объявления" && (
@@ -80,7 +88,6 @@ class AdvForm extends React.Component {
     );
   };
 
-  //TODO - сделать элемент Input и в нём свойство errorMessage
 
   renderSelect = ({ label, children }) => {
     return (
@@ -118,64 +125,64 @@ class AdvForm extends React.Component {
     });
   };
 
-  renderMembers = ({ fields, meta: { touched, error, submitFailed } }) => {
-    // ...rest
-    // console.log("props inside renderMembers", rest);
-    // return <div>members</div>;
-    console.log(this);
-    return (
-      <div>
-        <div>
-          <button
-            type="submit"
-            className="ui button primary"
-            onClick={() => fields.push()}
-          >
-            Подать
-          </button>
-          {(touched || submitFailed) && error && <span>{error}</span>}
-        </div>
-        {fields.map((member, index) => (
-          <div key={index}>
-            <button
-              type="button"
-              title="Remove Member"
-              onClick={() => fields.remove(index)}
-            >
-              Удалить
-            </button>
-            <button>Редактировать</button>
-            <h4>Объявление #{index + 1}</h4>
-            {/* <Adv
-                key={member.title || "default"}
-                title={member.title || "default"}
-                description={member.description || null}
-                phone={member.phone || "default"}
-                city={member.city || null}
-                src={member.src || null}
-              /> */}
-            {/* <Field
-              name={`${member}.firstName`}
-              type="text"
-              component={() => (
-                <div>
-                  Adv
-                  <Adv title="title" />
-                </div>
-              )}
-              label="First Name"
-            /> */}
-            {/* <Field
-                name={`${member}.lastName`}
-                type="text"
-                component={renderField}
-                label="Last Name"
-              /> */}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  // renderMembers = ({ fields, meta: { touched, error, submitFailed } }) => {
+  //   // ...rest
+  //   // console.log("props inside renderMembers", rest);
+  //   // return <div>members</div>;
+  //   console.log(this);
+  //   return (
+  //     <div>
+  //       <div>
+  //         <button
+  //           type="submit"
+  //           className="ui button primary"
+  //           onClick={() => fields.push()}
+  //         >
+  //           Подать
+  //         </button>
+  //         {(touched || submitFailed) && error && <span>{error}</span>}
+  //       </div>
+  //       {fields.map((member, index) => (
+  //         <div key={index}>
+  //           <button
+  //             type="button"
+  //             title="Remove Member"
+  //             onClick={() => fields.remove(index)}
+  //           >
+  //             Удалить
+  //           </button>
+  //           <button>Редактировать</button>
+  //           <h4>Объявление #{index + 1}</h4>
+  //           {/* <Adv
+  //               key={member.title || "default"}
+  //               title={member.title || "default"}
+  //               description={member.description || null}
+  //               phone={member.phone || "default"}
+  //               city={member.city || null}
+  //               src={member.src || null}
+  //             /> */}
+  //           {/* <Field
+  //             name={`${member}.firstName`}
+  //             type="text"
+  //             component={() => (
+  //               <div>
+  //                 Adv
+  //                 <Adv title="title" />
+  //               </div>
+  //             )}
+  //             label="First Name"
+  //           /> */}
+  //           {/* <Field
+  //               name={`${member}.lastName`}
+  //               type="text"
+  //               component={renderField}
+  //               label="Last Name"
+  //             /> */}
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   render() {
     const { handleSubmit, reset, submitting, valid } = this.props;
@@ -217,7 +224,11 @@ class AdvForm extends React.Component {
         >
           {" "}
           {cities.map(city => (
-            <option key={city.name + " " + city.subject} value={city.name} className="city-select">
+            <option
+              key={city.name + " " + city.subject}
+              value={city.name}
+              className="city-select"
+            >
               {city.name}
             </option>
           ))}
@@ -231,10 +242,7 @@ class AdvForm extends React.Component {
           ref={fileInput => (this.fileInput = fileInput)}
         />
 
-        <img
-          className="img-adv"
-          src={this.state.selectedFile}
-        />
+        <img className="img-adv" src={this.state.selectedFile} />
         <button
           className="ui button-photo"
           onClick={e => {
@@ -289,9 +297,9 @@ const validate = formValues => {
   const regExp = /^((\+7|7|8)+([0-9]){10})$/;
 
   //DEV MODE
-  // if (formValues.phone && !formValues.phone.toString().match(regExp)) {
-  //   errors.phone = "Неверный формат";
-  // }
+  if (formValues.phone && !formValues.phone.toString().match(regExp)) {
+    errors.phone = "Неверный формат";
+  }
 
   return errors;
 };
