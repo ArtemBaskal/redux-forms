@@ -2,15 +2,23 @@ import React from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import { handleFormSubmit } from "../actions";
 import cities from "../apis/cities.json";
-import Adv from "./Adv";
+// import Adv from "./Adv";
 import { connect } from "react-redux";
 import "./AdvForm.css";
+import { bindActionCreators } from "redux";
 
 class AdvForm extends React.Component {
   //TODO - заменить на конструктор
-  state = {
-    selectedFile: null
-  };
+  // state = {
+  //   selectedFile: null
+  // };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedFile: null
+    };
+  }
 
   // renderError({ error, touched }) {
   //   if (touched && error) {
@@ -60,11 +68,7 @@ class AdvForm extends React.Component {
       <div className={`field ${label} ${this.hasErrorClass(meta) || ""}`}>
         <label className="form-label label-font">{label}</label>
         <div className={`hint-rigth ${this.hasErrorClass(meta) || ""}`}>
-          <label
-            className={`label-hint-font ${
-              this.hasErrorClass(meta)
-            }`}
-          >
+          <label className={`label-hint-font ${this.hasErrorClass(meta)}`}>
             {this.renderHint(isNecessary, meta)}
           </label>
           {maxCharacters && !meta.active && meta.pristine && (
@@ -87,7 +91,6 @@ class AdvForm extends React.Component {
       </div>
     );
   };
-
 
   renderSelect = ({ label, children }) => {
     return (
@@ -186,7 +189,7 @@ class AdvForm extends React.Component {
 
   render() {
     const { handleSubmit, reset, submitting, valid } = this.props;
-    // console.log(this.props);
+    console.log("ADV props", this.props);
     return (
       <form onSubmit={handleSubmit} className="ui form-submit error">
         <h1 className="main-title">Подать объявление</h1>
@@ -256,6 +259,12 @@ class AdvForm extends React.Component {
           type="submit"
           disabled={!valid || submitting}
           className="ui button-submit"
+          //   onSubmit={e => {
+          //     e.preventDefault();
+          //     console.log(e);
+          //     return this.myHandleSubmit;
+          //   }
+          // }
         >
           Подать
         </button>
@@ -275,11 +284,11 @@ class AdvForm extends React.Component {
 //   </div>
 // );
 
-const onSubmit = (values, dispatch) => {
-  // console.log(values);
-  alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-  return dispatch(handleFormSubmit(values));
-};
+// const onSubmit = (values, dispatch) => {
+//   // console.log(values);
+//   alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+//   return dispatch(handleFormSubmit(values));
+// };
 
 const validate = formValues => {
   const errors = {};
@@ -297,9 +306,9 @@ const validate = formValues => {
   const regExp = /^((\+7|7|8)+([0-9]){10})$/;
 
   //DEV MODE
-  if (formValues.phone && !formValues.phone.toString().match(regExp)) {
-    errors.phone = "Неверный формат";
-  }
+  // if (formValues.phone && !formValues.phone.toString().match(regExp)) {
+  //   errors.phone = "Неверный формат";
+  // }
 
   return errors;
 };
@@ -310,6 +319,23 @@ const mapStateToProps = state => {
   return { submittedForms: state.submitForm };
 };
 
-AdvForm = connect(mapStateToProps)(AdvForm);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleFormSubmit,
+      reset: reduxForm.reset
+    },
+    dispatch
+  );
+};
 
-export default reduxForm({ form: "inputForm", onSubmit, validate })(AdvForm);
+AdvForm = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdvForm);
+
+export default reduxForm({
+  form: "inputForm",
+  // onSubmit,
+  validate
+})(AdvForm);

@@ -6,5 +6,5 @@ import advDeleteReducer from "./advDeleteReducer";
 export default combineReducers({
   form: formReducer,
   submitForm: formSubmitReducer,
-  advDelete: advDeleteReducer
+  // advDelete: advDeleteReducer
 });

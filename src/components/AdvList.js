@@ -1,8 +1,19 @@
 import React from "react";
 import Adv from "./Adv";
 import { connect } from "react-redux";
+import { handleAdvDelete } from "../actions";
+import { bindActionCreators } from "redux";
 
 class AdvList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onItemDelete = this.onItemDelete.bind(this);
+  }
+
+  onItemDelete(title) {
+    this.props.handleAdvDelete(title);
+  }
+
   render() {
     // console.log(localStorage);
     return (
@@ -17,6 +28,7 @@ class AdvList extends React.Component {
               phone={form.phone}
               city={form.city || null}
               src={form.src || null}
+              onDelete={this.onItemDelete}
             />
           );
         })}
@@ -29,4 +41,16 @@ const mapStateToProps = state => {
   return { submittedForms: state.submitForm };
 };
 
-export default connect(mapStateToProps)(AdvList);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleAdvDelete
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdvList);
