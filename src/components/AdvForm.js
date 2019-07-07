@@ -1,11 +1,11 @@
 import React from "react";
-import { Field, FieldArray, reduxForm } from "redux-form";
-import { handleFormSubmit } from "../actions";
+import { Field, reduxForm } from "redux-form";
+// import { handleFormSubmit /* handleAdvEdit */ } from "../actions";
 import cities from "../apis/cities.json";
 // import Adv from "./Adv";
 import { connect } from "react-redux";
-import "./AdvForm.css";
-import { bindActionCreators } from "redux";
+import "../styles/AdvForm.css";
+// import { bindActionCreators } from "redux";
 
 class AdvForm extends React.Component {
   //TODO - заменить на конструктор
@@ -16,7 +16,8 @@ class AdvForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFile: null
+      selectedFile: null,
+      // initialValues: props.initialValues
     };
   }
 
@@ -188,8 +189,8 @@ class AdvForm extends React.Component {
   // };
 
   render() {
-    const { handleSubmit, reset, submitting, valid } = this.props;
-    console.log("ADV props", this.props);
+    const { handleSubmit, submitting, valid, pristine } = this.props;
+    // console.log("ADV props", this.props);
     return (
       <form onSubmit={handleSubmit} className="ui form-submit error">
         <h1 className="main-title">Подать объявление</h1>
@@ -245,7 +246,7 @@ class AdvForm extends React.Component {
           ref={fileInput => (this.fileInput = fileInput)}
         />
 
-        <img className="img-adv" src={this.state.selectedFile} />
+        <img style={{ display: "none" }} src={this.state.selectedFile} alt="" />
         <button
           className="ui button-photo"
           onClick={e => {
@@ -257,7 +258,7 @@ class AdvForm extends React.Component {
         </button>
         <button
           type="submit"
-          disabled={!valid || submitting}
+          disabled={!valid || pristine || submitting}
           className="ui button-submit"
           //   onSubmit={e => {
           //     e.preventDefault();
@@ -303,8 +304,8 @@ const validate = formValues => {
   }
 
   //const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
-  const regExp = /^((\+7|7|8)+([0-9]){10})$/;
 
+  // const regExp = /^((\+7|7|8)+([0-9]){10})$/;
   //DEV MODE
   // if (formValues.phone && !formValues.phone.toString().match(regExp)) {
   //   errors.phone = "Неверный формат";
@@ -315,27 +316,32 @@ const validate = formValues => {
 
 //.trim()
 
-const mapStateToProps = state => {
-  return { submittedForms: state.submitForm };
-};
+// const mapStateToProps = state => {
+//   return {
+//     // submittedForms: state.submitForm,
+//     initialValues: state.formData.payload
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      handleFormSubmit,
-      reset: reduxForm.reset
-    },
-    dispatch
-  );
-};
+// const mapDispatchToProps = dispatch => {
+//   return bindActionCreators(
+//     {
+//       handleFormSubmit,
+//       // handleAdvEdit
+//       // reset: reduxForm.reset
+//     },
+//     dispatch
+//   );
+// };
 
-AdvForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdvForm);
+// AdvForm = connect(
+//   mapStateToProps
+//   // mapDispatchToProps
+// )(AdvForm);
 
 export default reduxForm({
   form: "inputForm",
-  // onSubmit,
+  // enableReinitialize: true,
+  // keepDirtyOnReinitialize: true,
   validate
 })(AdvForm);
