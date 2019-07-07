@@ -32,7 +32,7 @@ class Adv extends React.Component {
       onEdit
     } = this.props;
 
-    console.log(this.props);
+    // console.log(this.props);
 
     return (
       <div
@@ -66,6 +66,7 @@ class Adv extends React.Component {
                 console.log("EDIT");
                 console.log(this.props);
                 console.log({ title, description, phone /* city, src  */ });
+                onDelete(title);
                 return onEdit({ title, description, phone });
                 // return null;
                 // return this.advDelete.click();

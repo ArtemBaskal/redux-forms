@@ -21,7 +21,7 @@ class App extends React.Component {
     destroy("inputForm");
   }
   render() {
-    console.log("props in app", this.props);
+    // console.log("props in app", this.props);
     return (
       <div className="ui container">
         <AdvForm
@@ -71,6 +71,6 @@ App = connect(
 export default reduxForm({
   form: "inputForm",
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+  // keepDirtyOnReinitialize: true
   // onSubmit,
 })(App);

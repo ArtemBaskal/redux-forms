@@ -1,9 +1,9 @@
 import { ADV_EDIT } from "../actions/types";
 
-export default (state = { title: "default title", description: "default description", phone: "89992229955" }, action) => {
+export default (state = {}, action) => {
   if (action.type === ADV_EDIT) {
-    console.log("reducer ADV_EDIT state", state);
-    console.log("reducer ADV_EDIT action", action);
+    // console.log("reducer ADV_EDIT state", state);
+    // console.log("reducer ADV_EDIT action", action);
     let payload = action.payload;
     console.log({ ...state, ...payload });
     return { ...state, ...payload };

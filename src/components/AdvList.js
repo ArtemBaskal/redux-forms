@@ -21,19 +21,24 @@ class AdvList extends React.Component {
   }
 
   render() {
-    // console.log(localStorage);
+    // let advList = this.props.submittedForms;
+    // console.log(advList);
+    // let arr = [];
+    // let advList = Object.values(this.props.submittedForms);
+    let advList = Object.values(localStorage);
     return (
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
-        {this.props.submittedForms.map(form => {
+        {advList.map(advItem => {
+          advItem = JSON.parse(advItem);
           return (
             <Adv
-              key={form.title || null}
-              title={form.title || null}
-              description={form.description || null}
-              phone={form.phone}
-              city={form.city || null}
-              src={form.src || null}
+              key={advItem.title || null}
+              title={advItem.title || null}
+              description={advItem.description || null}
+              phone={advItem.phone}
+              city={advItem.city || null}
+              src={advItem.src || null}
               onDelete={this.onItemDelete}
               onEdit={this.onItemEdit}
             />

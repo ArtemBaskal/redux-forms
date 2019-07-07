@@ -3,7 +3,7 @@ import { Field, reduxForm } from "redux-form";
 // import { handleFormSubmit /* handleAdvEdit */ } from "../actions";
 import cities from "../apis/cities.json";
 // import Adv from "./Adv";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import "../styles/AdvForm.css";
 // import { bindActionCreators } from "redux";
 
@@ -17,7 +17,7 @@ class AdvForm extends React.Component {
     super(props);
     this.state = {
       selectedFile: null,
-      // initialValues: props.initialValues
+      initialValues: {}
     };
   }
 
@@ -190,7 +190,7 @@ class AdvForm extends React.Component {
 
   render() {
     const { handleSubmit, submitting, valid, pristine } = this.props;
-    // console.log("ADV props", this.props);
+    // console.log("ADV FORM props", this.props);
     return (
       <form onSubmit={handleSubmit} className="ui form-submit error">
         <h1 className="main-title">Подать объявление</h1>
@@ -260,6 +260,7 @@ class AdvForm extends React.Component {
           type="submit"
           disabled={!valid || pristine || submitting}
           className="ui button-submit"
+          // onClick={() => console.log(this.props)}
           //   onSubmit={e => {
           //     e.preventDefault();
           //     console.log(e);
