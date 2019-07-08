@@ -3,32 +3,52 @@ import { Field, reduxForm } from "redux-form";
 import cities from "../apis/cities.json";
 import "../styles/AdvForm.css";
 
+// let cities = [
+//   {
+//     name: "Москва",
+//     subject: "Москва"
+//   },
+//   {
+//     name: "Хабаровск",
+//     subject: "Хабаровский край"
+//   },
+//   {
+//     name: "Чебоксары",
+//     subject: "Чувашия"
+//   }
+// ];
+
 class FieldFileInput extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.state = {
-      selectedFile: null
+      selectedFile: null,
+      fileName: null
     };
   }
 
   componentWillReceiveProps() {
-    this.setState({ selectedFile: null });
+    this.setState({ selectedFile: null, fileName: null });
   }
 
   onChange(e) {
     this.getBase64(e.target.files[0]).then(base64 => {
-      this.props.input.onChange(base64);
+      console.log(base64);
+      this.props.input.onChange(base64.file);
       this.setState({
-        selectedFile: base64
+        selectedFile: base64.file,
+        fileName: base64.fileName
       });
     });
   }
 
   getBase64 = file => {
     return new Promise((resolve, reject) => {
+      console.log(file);
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () =>
+        resolve({ file: reader.result, fileName: file.name });
       reader.onerror = error => reject(error);
       try {
         reader.readAsDataURL(file);
@@ -59,7 +79,7 @@ class FieldFileInput extends React.Component {
           ref={fileInput => (this.fileInput = fileInput)}
         />
         <button
-          className="ui button-photo"
+          className="ui button-photo-select"
           onClick={e => {
             e.preventDefault();
             return this.fileInput.click();
@@ -67,11 +87,18 @@ class FieldFileInput extends React.Component {
         >
           Прикрепить фото
         </button>
-        <img
-          style={{ width: "150px", heigth: "150px" }}
-          src={this.state.selectedFile}
-          alt=""
-        />
+        <img className="img-photo" src={this.state.selectedFile} alt="" />
+        <label className="label-fileName">{this.state.fileName}</label>
+        {this.state.fileName && (
+          <label
+            className="btn-img-delete"
+            onClick={() => {//TODO: ОБЯЗАТЕЛЬНО СДЕЛАТЬ УДАЛЕНИЕ НЕ ТОЛЬКО ВО ВЬЮ
+              this.setState({ selectedFile: null, fileName: null });
+            }}
+          >
+            Удалить
+          </label>
+        )}
       </div>
     );
   }
@@ -82,6 +109,7 @@ class AdvForm extends React.Component {
     super(props);
     this.state = {
       selectedFile: null,
+      fileName: null,
       initialValues: {}
     };
   }
@@ -167,6 +195,7 @@ class AdvForm extends React.Component {
           {label}
         </label>
         <select {...input} className="ui search dropdown-cities">
+          <option value="" defaultValue disabled hidden />
           {children}
         </select>
       </div>
@@ -262,7 +291,7 @@ class AdvForm extends React.Component {
               label={city.name}
               key={city.name + " " + city.subject}
               value={city.name}
-              className="city-select"
+              className="city-option"
             >
               {city.name}
             </option>

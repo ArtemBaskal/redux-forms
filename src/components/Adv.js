@@ -45,7 +45,7 @@ class Adv extends React.Component {
         <div className="font-adv main-info-adv">
           <div>
             <div className="title-adv">{title}</div>
-            <div className="description-adv">{description}</div>
+            <div className="description-adv">{description || "Описание"}</div>
             <img
               className="img-adv"
               src={
@@ -57,7 +57,7 @@ class Adv extends React.Component {
           </div>
           <div className="sidebar-adv">
             <div>{phone}</div>
-            <div>{city || "Москва"}</div>
+            <div>{city || "Город"}</div>
             <button
               className={"button-adv button-edit"}
               onClick={e => {
@@ -70,7 +70,15 @@ class Adv extends React.Component {
                   phone /* , id  */ /* city, src  */
                 });
                 onDelete(title);
-                return onEdit({ title, description, phone /* , id */ });
+                return onEdit({
+                  title,
+                  description,
+                  phone,
+                  city,
+                  src
+                  //TODO: при редактировании фото теряется, исправить
+                  /* , id */
+                });
                 // return null;
                 // return this.advDelete.click();
                 // return reset;

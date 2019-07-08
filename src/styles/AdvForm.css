@@ -110,11 +110,11 @@
   overflow: hidden;
 }
 
-.button-photo {
+.button-photo-select {
   width: 178px;
   height: 36px;
   margin-top: 32px;
-  margin-bottom: 29px;
+  margin-bottom: 23px;
   border-color: #2d74da;
   color: #2d74da;
   border-radius: 3px;
@@ -123,12 +123,13 @@
   border: solid 1px #2d74da;
 }
 
-.button-photo:hover {
+.button-photo-select:hover {
   background-color: #2d74da;
   color: #ffffff;
+  cursor: pointer;
 }
 
-.button-photo:active {
+.button-photo-select:active {
   background-color: #1c5bb5;
 }
 
@@ -144,14 +145,49 @@
 
 .button-submit:hover {
   background-image: linear-gradient(to top, #2d74da, #276ccf, #2367c8);
+  cursor: pointer;
 }
 
 .dropdown-cities {
+  /* -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+   */
   width: 410px;
   height: 36px;
   border-radius: 3px;
   margin: 12px 100% 32px 0;
+  padding: 8px 0 9px 15px;
+  color: #68717c;
+
+  /* color:#fff;
+  background:#369; */
 }
+
+/* .city-select:hover {
+  box-shadow: 0 0 10px 100px #1882a8 inset;
+} */
+/* .city-select {
+  color: blue;
+} */
+.city-option {
+  /* color: red; */
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
+  border: solid 1px #d4d8db;
+  font-size: 20px;
+  font-family: SourceSansPro;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  /* color: #68717c; */
+}
+
+/* .select-selected:after {
+  background-color: red;
+} */
 
 /* .img-adv {
   display: none;
@@ -160,7 +196,38 @@
 /* .city-select {
 } */
 
-.field {
-  /* height: 100px;
-  width: 200px */
+.img-photo {
+  display: block;
+  width: 69px;
+  height: 52px;
+  padding-bottom: 23px;
+  /* background-color: pink; */
+}
+
+.label-fileName {
+  height: 18px;
+  font-family: SourceSansPro;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #2d74da;
+}
+
+.btn-img-delete {
+  font-family: SourceSansPro;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fa5e5b;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.btn-img-delete:hover {
+  cursor: pointer;
 }

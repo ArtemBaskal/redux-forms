@@ -12,9 +12,7 @@ export default (state = {}, action) => {
       localStorage[action.payload.title] = JSON.stringify(action.payload);
     } catch (e) {
       console.error(e);
-      alert(
-        "Ошибка! Загруженные файлы превышают лимит. Локальное хранилище переполнено и будет очищено"
-      );
+      alert("Ошибка! localStorage пресысило лимит 5 Мбайт, оно будет очищено.");
       localStorage.clear();
     }
     return { ...state, [action.payload.title]: action.payload };

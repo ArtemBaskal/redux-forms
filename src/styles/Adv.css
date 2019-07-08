@@ -34,10 +34,12 @@
 .button-adv:hover {
   background-color: #2d74da;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .button-delete:hover {
   background-color: #fa5e5b;
+  cursor: pointer;
 }
 
 .button-adv:active {

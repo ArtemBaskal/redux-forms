@@ -23,7 +23,7 @@ class AdvList extends React.Component {
   }
 
   render() {
-    //В localStorage данные хранятся в случайном порядке, поэтому сортирует их по убиванию ИД
+    //В localStorage данные хранятся в случайном порядке, поэтому сортирует их по убиванию ID
     const sortedParsedList = Object.values(localStorage)
       .map(adv => JSON.parse(adv))
       .sort((adv1, adv2) => adv2.id - adv1.id);
@@ -34,8 +34,8 @@ class AdvList extends React.Component {
           return (
             <Adv
               // id={id + "-" + advItem.title}
-              key={advItem.title || null}
-              title={advItem.title || null}
+              key={advItem.title}
+              title={advItem.title}
               description={advItem.description || null}
               phone={advItem.phone}
               city={advItem.city || null}
