@@ -3,6 +3,48 @@ import { Field, reduxForm } from "redux-form";
 import cities from "../apis/cities.json";
 import "../styles/AdvForm.css";
 
+class FieldFileInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(e) {
+    // const {input: { onChange }} = this.props;
+    console.log(e.target.files[0].name);
+    AdvForm.getBase64(e.target.files[0]).then(base64 => {
+      console.log(this.props);
+      // console.log("loclaStorage", localStorage);
+      console.log("base64", base64);
+
+      // return base64;
+      this.props.input.onChange(base64);
+    });
+    // Promise.resolve().then(console.log(filik));
+    // this.props.input.onChange(e.target.files[0].name);
+  }
+
+  render() {
+    const {
+      input: { value }
+    } = this.props;
+    const { input, label, required, meta } = this.props; //whatever props you send to the component from redux-form Field
+    return (
+      <div>
+        <label>{label}</label>
+        <div>
+          <input
+            // {...input}
+            type="file"
+            accept=".jpg, .png, .jpeg"
+            onChange={this.onChange}
+          />
+        </div>
+      </div>
+    );
+  }
+}
+
 class AdvForm extends React.Component {
   constructor(props) {
     super(props);
@@ -100,20 +142,22 @@ class AdvForm extends React.Component {
   };
 
   fileSelectedHandler = event => {
+    console.log(this.props);
     const file = event.target.files[0];
 
     this.getBase64(file).then(base64 => {
-      localStorage["last"] = base64;
-      localStorage[file.name] = base64;
+      // localStorage["last"] = base64;
+      // localStorage[file.name] = base64;
       this.setState({
         selectedFile: base64
       });
       console.debug("file stored", base64);
       console.debug("state", this.state);
     });
+    // this.props.input.onChange = this.state.selectedFile;
   };
 
-  getBase64 = file => {
+  static getBase64 = file => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
@@ -125,7 +169,6 @@ class AdvForm extends React.Component {
       }
     });
   };
-
 
   render() {
     const { handleSubmit, submitting, valid, pristine } = this.props;
@@ -174,12 +217,7 @@ class AdvForm extends React.Component {
           placeholder="+7 (___) ___ - __ - __"
           type="text"
         />
-        <Field
-          name="city"
-          // component={RadioControl}
-          component={this.renderSelect}
-          label="Город"
-        >
+        <Field name="city" component={this.renderSelect} label="Город">
           {cities.map(city => (
             <option
               label={city.name}
@@ -191,10 +229,39 @@ class AdvForm extends React.Component {
             </option>
           ))}
         </Field>
+
+        <Field
+          name="file"
+          component={
+            FieldFileInput
+            //  <div>
+            //   <input
+            //     // style={{ display: "none" }}
+            //     className="ui button"
+            //     type="file"
+            //     accept=".jpg, .png, .jpeg"
+            //     onChange={this.fileSelectedHandler}
+            //     ref={fileInput => (this.fileInput = fileInput)}
+            //   />
+            //   <img
+            //     style={{ display: "none" }}
+            //     src={this.state.selectedFile}
+            //     alt=""
+            //   />
+            // </div>
+          }
+          // component={({ input }) => (
+          //   <input {...input || "12"} onChange={this.fileSelectedHandler} type="file" />
+          // )}
+          label="Файл"
+          type="file"
+        />
+        {/* 
         <input
-          style={{ display: "none" }}
+          // style={{ display: "none" }}
           className="ui button"
           type="file"
+          accept=".jpg, .png, .jpeg"
           onChange={this.fileSelectedHandler}
           ref={fileInput => (this.fileInput = fileInput)}
         />
@@ -207,7 +274,7 @@ class AdvForm extends React.Component {
           }}
         >
           Прикрепить фото
-        </button>
+        </button> */}
         <button
           type="submit"
           disabled={!valid || pristine || submitting}

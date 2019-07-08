@@ -28,6 +28,7 @@ class AdvList extends React.Component {
     // let arr = [];
     // let advList = Object.values(this.props.submittedForms);
     let advList = Object.values(localStorage);
+    console.log(advList);
     return (
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
@@ -46,7 +47,7 @@ class AdvList extends React.Component {
               description={advItem.description || null}
               phone={advItem.phone}
               city={advItem.city || null}
-              src={advItem.src || null}
+              src={advItem.file || null}
               onDelete={this.onItemDelete}
               onEdit={this.onItemEdit}
             />
