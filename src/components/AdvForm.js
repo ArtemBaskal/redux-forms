@@ -1,18 +1,9 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-// import { handleFormSubmit /* handleAdvEdit */ } from "../actions";
 import cities from "../apis/cities.json";
-// import Adv from "./Adv";
-// import { connect } from "react-redux";
 import "../styles/AdvForm.css";
-// import { bindActionCreators } from "redux";
 
 class AdvForm extends React.Component {
-  //TODO - заменить на конструктор
-  // state = {
-  //   selectedFile: null
-  // };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -63,7 +54,8 @@ class AdvForm extends React.Component {
     isNecessary,
     maxCharacters,
     placeholder,
-    meta
+    meta,
+    type
   }) => {
     return (
       <div className={`field ${label} ${this.hasErrorClass(meta) || ""}`}>
@@ -81,6 +73,7 @@ class AdvForm extends React.Component {
         {label !== "Текст объявления" && (
           <input
             {...input}
+            type={type}
             placeholder={placeholder}
             autoComplete="off"
             className="form-input"
@@ -93,11 +86,15 @@ class AdvForm extends React.Component {
     );
   };
 
-  renderSelect = ({ label, children }) => {
+  renderSelect = ({ label, children, type, input }) => {
     return (
       <div>
-        <label className="label-font">{label}</label>
-        <select className="ui search dropdown-cities">{children}</select>
+        <label className="label-font" type={type}>
+          {label}
+        </label>
+        <select {...input} className="ui search dropdown-cities">
+          {children}
+        </select>
       </div>
     );
   };
@@ -129,71 +126,28 @@ class AdvForm extends React.Component {
     });
   };
 
-  // renderMembers = ({ fields, meta: { touched, error, submitFailed } }) => {
-  //   // ...rest
-  //   // console.log("props inside renderMembers", rest);
-  //   // return <div>members</div>;
-  //   console.log(this);
-  //   return (
-  //     <div>
-  //       <div>
-  //         <button
-  //           type="submit"
-  //           className="ui button primary"
-  //           onClick={() => fields.push()}
-  //         >
-  //           Подать
-  //         </button>
-  //         {(touched || submitFailed) && error && <span>{error}</span>}
-  //       </div>
-  //       {fields.map((member, index) => (
-  //         <div key={index}>
-  //           <button
-  //             type="button"
-  //             title="Remove Member"
-  //             onClick={() => fields.remove(index)}
-  //           >
-  //             Удалить
-  //           </button>
-  //           <button>Редактировать</button>
-  //           <h4>Объявление #{index + 1}</h4>
-  //           {/* <Adv
-  //               key={member.title || "default"}
-  //               title={member.title || "default"}
-  //               description={member.description || null}
-  //               phone={member.phone || "default"}
-  //               city={member.city || null}
-  //               src={member.src || null}
-  //             /> */}
-  //           {/* <Field
-  //             name={`${member}.firstName`}
-  //             type="text"
-  //             component={() => (
-  //               <div>
-  //                 Adv
-  //                 <Adv title="title" />
-  //               </div>
-  //             )}
-  //             label="First Name"
-  //           /> */}
-  //           {/* <Field
-  //               name={`${member}.lastName`}
-  //               type="text"
-  //               component={renderField}
-  //               label="Last Name"
-  //             /> */}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
 
   render() {
     const { handleSubmit, submitting, valid, pristine } = this.props;
     // console.log("ADV FORM props", this.props);
+    // const id = new Date().valueOf();
     return (
       <form onSubmit={handleSubmit} className="ui form-submit error">
         <h1 className="main-title">Подать объявление</h1>
+        {/* <Field
+          name="id"
+          // component={({ input, dirty }) => {
+          //   dirty = true;
+          //   return <input value={id} {...input} />;
+          // }}
+          component={this.renderInput}
+          label="ИД"
+          // isNecessary
+          type="text"
+        /> */}
+
+        {/*   TODO переделать в массив */}
+
         <Field
           name="title"
           component={this.renderInput}
@@ -222,13 +176,13 @@ class AdvForm extends React.Component {
         />
         <Field
           name="city"
+          // component={RadioControl}
           component={this.renderSelect}
           label="Город"
-          type="text"
         >
-          {" "}
           {cities.map(city => (
             <option
+              label={city.name}
               key={city.name + " " + city.subject}
               value={city.name}
               className="city-select"
@@ -237,7 +191,6 @@ class AdvForm extends React.Component {
             </option>
           ))}
         </Field>
-
         <input
           style={{ display: "none" }}
           className="ui button"
@@ -245,7 +198,6 @@ class AdvForm extends React.Component {
           onChange={this.fileSelectedHandler}
           ref={fileInput => (this.fileInput = fileInput)}
         />
-
         <img style={{ display: "none" }} src={this.state.selectedFile} alt="" />
         <button
           className="ui button-photo"
@@ -260,6 +212,8 @@ class AdvForm extends React.Component {
           type="submit"
           disabled={!valid || pristine || submitting}
           className="ui button-submit"
+
+          //TODO - добавить propTypes, использовать геттер из примера в книге, возможно использовать propTypes
           // onClick={() => console.log(this.props)}
           //   onSubmit={e => {
           //     e.preventDefault();
@@ -315,30 +269,7 @@ const validate = formValues => {
   return errors;
 };
 
-//.trim()
-
-// const mapStateToProps = state => {
-//   return {
-//     // submittedForms: state.submitForm,
-//     initialValues: state.formData.payload
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return bindActionCreators(
-//     {
-//       handleFormSubmit,
-//       // handleAdvEdit
-//       // reset: reduxForm.reset
-//     },
-//     dispatch
-//   );
-// };
-
-// AdvForm = connect(
-//   mapStateToProps
-//   // mapDispatchToProps
-// )(AdvForm);
+//TODO .trim() в  функциях
 
 export default reduxForm({
   form: "inputForm",

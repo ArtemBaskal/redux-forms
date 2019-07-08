@@ -2,7 +2,7 @@ import { FORM_SUBMIT, ADV_DELETE, ADV_EDIT } from "./types";
 
 export const handleFormSubmit = data => {
   console.log("from handleFormSubmit action", data);
-  // console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data));
   console.log(localStorage);
   return {
     type: FORM_SUBMIT,

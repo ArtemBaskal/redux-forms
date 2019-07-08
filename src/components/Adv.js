@@ -30,9 +30,12 @@ class Adv extends React.Component {
       // change,
       onDelete,
       onEdit
+      // id
     } = this.props;
 
-    // console.log(this.props);
+    console.log(this.props);
+
+    const id = new Date().valueOf();
 
     return (
       <div
@@ -43,6 +46,7 @@ class Adv extends React.Component {
         {/* <Field name={title} title={title} component={this.renderTitle} /> */}
         <div className="font-adv main-info-adv">
           <div>
+            <div>{"ADV ID " + id + "-" + title}</div>
             <div className="title-adv">{title}</div>
             <div className="description-adv">{description}</div>
             <img
@@ -65,9 +69,13 @@ class Adv extends React.Component {
                 e.preventDefault();
                 console.log("EDIT");
                 console.log(this.props);
-                console.log({ title, description, phone /* city, src  */ });
+                console.log({
+                  title,
+                  description,
+                  phone /* , id  */ /* city, src  */
+                });
                 onDelete(title);
-                return onEdit({ title, description, phone });
+                return onEdit({ title, description, phone /* , id */ });
                 // return null;
                 // return this.advDelete.click();
                 // return reset;

@@ -13,10 +13,12 @@ class AdvList extends React.Component {
   }
 
   onItemDelete(title) {
+    console.log(title);
     this.props.handleAdvDelete(title);
   }
 
   onItemEdit(formData) {
+    console.log(formData);
     this.props.handleAdvEdit(formData);
   }
 
@@ -30,9 +32,15 @@ class AdvList extends React.Component {
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
         {advList.map(advItem => {
-          advItem = JSON.parse(advItem);
+          try {
+            advItem = JSON.parse(advItem);
+          } catch (e) {
+            console.log(e);
+          }
+          // const id = new Date().valueOf();
           return (
             <Adv
+              // id={id + "-" + advItem.title}
               key={advItem.title || null}
               title={advItem.title || null}
               description={advItem.description || null}
