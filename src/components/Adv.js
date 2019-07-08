@@ -35,8 +35,6 @@ class Adv extends React.Component {
 
     console.log(this.props);
 
-    const id = new Date().valueOf();
-
     return (
       <div
         className="adv-item"
@@ -46,7 +44,6 @@ class Adv extends React.Component {
         {/* <Field name={title} title={title} component={this.renderTitle} /> */}
         <div className="font-adv main-info-adv">
           <div>
-            <div>{"ADV ID " + id + "-" + title}</div>
             <div className="title-adv">{title}</div>
             <div className="description-adv">{description}</div>
             <img
@@ -54,9 +51,6 @@ class Adv extends React.Component {
               src={
                 src ||
                 "https://cdn4.iconfinder.com/data/icons/oakcons-2/16/Image-512.png"
-                // "https://blog.algolia.com/wp-content/uploads/2015/11/React_illo_final_720x400.png"
-                // "http://image.noelshack.com/fichiers/2019/03/4/1547680066-this-meme-is-called-brainlet-wojak-73c052b7ce6b031a7963b29e865681eb.jpg"
-                // src="https://i.ytimg.com/vi/nLTTa0ToTU8/maxresdefault.jpg"
               }
               alt={title}
             />

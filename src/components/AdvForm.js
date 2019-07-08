@@ -39,7 +39,7 @@ class FieldFileInput extends React.Component {
   };
 
   render() {
-    console.log(localStorage);
+    // console.log(localStorage);
     return (
       <div>
         {/* <label>{this.props.label}</label>
@@ -223,6 +223,16 @@ class AdvForm extends React.Component {
 
         {/*   TODO переделать в массив */}
 
+        {/* <Field
+          name="id"
+          label="ID"
+          type="text"
+          component={({ input }) => {
+            console.log(this.props.input);
+            return <input {...input} />;
+          }}
+        /> */}
+
         <Field
           name="title"
           component={this.renderInput}
@@ -233,10 +243,7 @@ class AdvForm extends React.Component {
         />
         <Field
           name="description"
-          component={
-            // "textarea"
-            this.renderInput
-          }
+          component={this.renderInput}
           label="Текст объявления"
           maxCharacters={300}
           type="text"

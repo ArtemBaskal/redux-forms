@@ -23,22 +23,14 @@ class AdvList extends React.Component {
   }
 
   render() {
-    // let advList = this.props.submittedForms;
-    // console.log(advList);
-    // let arr = [];
-    // let advList = Object.values(this.props.submittedForms);
-    let advList = Object.values(localStorage);
-    // console.log(advList);
+    //В localStorage данные хранятся в случайном порядке, поэтому сортирует их по убиванию ИД
+    const sortedParsedList = Object.values(localStorage)
+      .map(adv => JSON.parse(adv))
+      .sort((adv1, adv2) => adv2.id - adv1.id);
     return (
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
-        {advList.map(advItem => {
-          try {
-            advItem = JSON.parse(advItem);
-          } catch (e) {
-            console.log(e);
-          }
-          // const id = new Date().valueOf();
+        {sortedParsedList.map(advItem => {
           return (
             <Adv
               // id={id + "-" + advItem.title}

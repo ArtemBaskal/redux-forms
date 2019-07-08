@@ -71,6 +71,6 @@ App = connect(
 export default reduxForm({
   form: "inputForm",
   enableReinitialize: true,
-  // keepDirtyOnReinitialize: true
+  keepDirtyOnReinitialize: true
   // onSubmit,
 })(App);
