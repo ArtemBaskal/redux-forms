@@ -11,7 +11,16 @@ export default (state = {} /* = { id: 1000 } */, action) => {
     // state.id++;
     // action.payload.id++;
     // action.payload.id = state.id++;
-    localStorage[action.payload.title] = JSON.stringify(action.payload);
+    try {
+      localStorage[action.payload.title] = JSON.stringify(action.payload);
+    } catch (e) {
+      console.error(e);
+
+      alert(
+        "Локальное хранилище переполнено, размер превысил 5 мегабайт. Локальное хранилище будет очищено"
+      );
+      localStorage.clear();
+    }
     return { ...state, [action.payload.title]: action.payload };
   }
   if (action.type === ADV_DELETE) {

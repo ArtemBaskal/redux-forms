@@ -7,39 +7,71 @@ class FieldFileInput extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.state = {
+      selectedFile: null
+    };
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ selectedFile: null });
   }
 
   onChange(e) {
-    // const {input: { onChange }} = this.props;
-    console.log(e.target.files[0].name);
-    AdvForm.getBase64(e.target.files[0]).then(base64 => {
-      console.log(this.props);
-      // console.log("loclaStorage", localStorage);
-      console.log("base64", base64);
-
-      // return base64;
+    this.getBase64(e.target.files[0]).then(base64 => {
       this.props.input.onChange(base64);
+      this.setState({
+        selectedFile: base64
+      });
     });
-    // Promise.resolve().then(console.log(filik));
-    // this.props.input.onChange(e.target.files[0].name);
   }
 
+  getBase64 = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      try {
+        reader.readAsDataURL(file);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  };
+
   render() {
-    const {
-      input: { value }
-    } = this.props;
-    const { input, label, required, meta } = this.props; //whatever props you send to the component from redux-form Field
+    console.log(localStorage);
     return (
       <div>
-        <label>{label}</label>
+        {/* <label>{this.props.label}</label>
         <div>
           <input
-            // {...input}
             type="file"
             accept=".jpg, .png, .jpeg"
             onChange={this.onChange}
           />
-        </div>
+        </div> */}
+        <input
+          style={{ display: "none" }}
+          className="ui button"
+          type="file"
+          accept=".jpg, .png, .jpeg"
+          onChange={this.onChange}
+          ref={fileInput => (this.fileInput = fileInput)}
+        />
+        <button
+          className="ui button-photo"
+          onClick={e => {
+            e.preventDefault();
+            return this.fileInput.click();
+          }}
+        >
+          Прикрепить фото
+        </button>
+        <img
+          style={{ width: "150px", heigth: "150px" }}
+          src={this.state.selectedFile}
+          alt=""
+        />
       </div>
     );
   }
@@ -141,34 +173,34 @@ class AdvForm extends React.Component {
     );
   };
 
-  fileSelectedHandler = event => {
-    console.log(this.props);
-    const file = event.target.files[0];
+  // fileSelectedHandler = event => {
+  //   console.log(this.props);
+  //   const file = event.target.files[0];
 
-    this.getBase64(file).then(base64 => {
-      // localStorage["last"] = base64;
-      // localStorage[file.name] = base64;
-      this.setState({
-        selectedFile: base64
-      });
-      console.debug("file stored", base64);
-      console.debug("state", this.state);
-    });
-    // this.props.input.onChange = this.state.selectedFile;
-  };
+  //   this.getBase64(file).then(base64 => {
+  //     // localStorage["last"] = base64;
+  //     // localStorage[file.name] = base64;
+  //     this.setState({
+  //       selectedFile: base64
+  //     });
+  //     console.debug("file stored", base64);
+  //     console.debug("state", this.state);
+  //   });
+  // this.props.input.onChange = this.state.selectedFile;
+  // };
 
-  static getBase64 = file => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-      try {
-        reader.readAsDataURL(file);
-      } catch (e) {
-        console.error(e);
-      }
-    });
-  };
+  // static getBase64 = file => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = error => reject(error);
+  //     try {
+  //       reader.readAsDataURL(file);
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   });
+  // };
 
   render() {
     const { handleSubmit, submitting, valid, pristine } = this.props;

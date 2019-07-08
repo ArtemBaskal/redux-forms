@@ -28,7 +28,7 @@ class AdvList extends React.Component {
     // let arr = [];
     // let advList = Object.values(this.props.submittedForms);
     let advList = Object.values(localStorage);
-    console.log(advList);
+    // console.log(advList);
     return (
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
