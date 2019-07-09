@@ -13,27 +13,19 @@ class App extends React.Component {
     this.myHandleSubmit = this.myHandleSubmit.bind(this);
   }
   myHandleSubmit(formData) {
-    const { handleFormSubmit, /* reset */ destroy } = this.props;
+    const { handleFormSubmit, destroy, validate } = this.props;
     console.log(formData);
     console.log(this.props);
     handleFormSubmit(formData);
-    // reset("inputForm");
     destroy("inputForm");
+    // validate();
   }
   render() {
-    // console.log("props in app", this.props);
     return (
       <div className="ui container">
         <AdvForm
           onSubmit={this.myHandleSubmit}
-          initialValues={
-            //   {
-            //   title: "заглавие",
-            //   description: "описание",
-            //   phone: "00000000000"
-            // }
-            this.props.initialValues
-          }
+          initialValues={this.props.initialValues}
         />
         <AdvList />
       </div>
@@ -44,11 +36,6 @@ class App extends React.Component {
 const mapStateToProps = state => {
   return {
     initialValues: state.formData
-    //  {
-    //   title: "заглавие",
-    //   description: "описание",
-    //   phone: "00000000000"
-    // }
   };
 };
 
@@ -71,6 +58,6 @@ App = connect(
 export default reduxForm({
   form: "inputForm",
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
-  // onSubmit,
+  // keepDirtyOnReinitialize: true
+  // onSubmit
 })(App);

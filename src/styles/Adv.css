@@ -101,7 +101,6 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 78px;
-  /* background-color: #fa5e5b; */
 }
 
 .left-row-adv-item {
@@ -112,7 +111,6 @@
 }
 
 .adv-buttons {
-  /* flex-flow: column; */
   margin-top: auto;
-  /* flex: 0 1 auto; */
+  width: 178px;
 }

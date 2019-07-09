@@ -2,156 +2,58 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import cities from "../apis/cities.json";
 import "../styles/AdvForm.css";
+import FieldFileInput from "./FieldFileInput";
 
-// let cities = [
-//   {
-//     name: "Москва",
-//     subject: "Москва"
-//   },
-//   {
-//     name: "Хабаровск",
-//     subject: "Хабаровский край"
-//   },
-//   {
-//     name: "Чебоксары",
-//     subject: "Чувашия"
-//   }
-// ];
+const maxLength = max => value =>
+  value && value.length > max ? `Не более ${max} символов` : undefined;
+const maxLength140 = maxLength(140);
+const maxLength300 = maxLength(300);
 
-class FieldFileInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-    this.state = {
-      selectedFile: null,
-      fileName: null
-    };
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ selectedFile: null, fileName: null });
-  }
-
-  onChange(e) {
-    this.getBase64(e.target.files[0]).then(base64 => {
-      console.log(base64);
-      this.props.input.onChange(base64.file);
-      this.setState({
-        selectedFile: base64.file,
-        fileName: base64.fileName
-      });
-    });
-  }
-
-  getBase64 = file => {
-    return new Promise((resolve, reject) => {
-      console.log(file);
-      const reader = new FileReader();
-      reader.onload = () =>
-        resolve({ file: reader.result, fileName: file.name });
-      reader.onerror = error => reject(error);
-      try {
-        reader.readAsDataURL(file);
-      } catch (e) {
-        console.error(e);
-      }
-    });
-  };
-
-  render() {
-    // console.log(localStorage);
-    return (
-      <div>
-        {/* <label>{this.props.label}</label>
-        <div>
-          <input
-            type="file"
-            accept=".jpg, .png, .jpeg"
-            onChange={this.onChange}
-          />
-        </div> */}
-        <input
-          style={{ display: "none" }}
-          className="ui button"
-          type="file"
-          accept=".jpg, .png, .jpeg"
-          onChange={this.onChange}
-          ref={fileInput => (this.fileInput = fileInput)}
-        />
-        <button
-          className="ui button-photo-select"
-          onClick={e => {
-            e.preventDefault();
-            return this.fileInput.click();
-          }}
-        >
-          Прикрепить фото
-        </button>
-        <div className="add-photo-container">
-          {this.state.selectedFile && (
-            <img className="img-photo" src={this.state.selectedFile} alt="" />
-          )}
-          <div className="fileName-img-delete-container">
-            <label className="label-fileName">{this.state.fileName}</label>
-            {this.state.fileName && (
-              <label
-                className="label-img-delete"
-                onClick={() => {
-                  //TODO: ОБЯЗАТЕЛЬНО СДЕЛАТЬ УДАЛЕНИЕ НЕ ТОЛЬКО ВО ВЬЮ
-                  this.setState({ selectedFile: null, fileName: null });
-                }}
-              >
-                Удалить
-              </label>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+const required = value => (value ? undefined : "Обязательное поле");
 
 class AdvForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      fileName: null,
-      initialValues: {}
+      fileName: null
+      // initialValues: {}
     };
   }
 
-  // renderError({ error, touched }) {
-  //   if (touched && error) {
-  //     return (
-  //       <div className="ui error message">
-  //         <div className="header">{error}</div>
-  //       </div>
-  //     );
-  //   }
-  // }
-
   //TODO - перенести всю валидацию в validate
+  //TODO - вернуть валидацию всех форм при отправке
 
   renderHint(isNecessary, { active, pristine, touched, error }) {
     // console.log(error);
+
+    const hint = { message: null, src: "" };
     if (isNecessary && !active && pristine && !touched) {
-      return "Обязательное поле";
+      hint.message = "Обязательное поле";
+      hint.src =
+        "https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/39AF4416-C34B-451B-8D7D-E92AF54A4AB1.svg";
     }
-    if (error) {
-      return error;
+    if (touched && error) {
+      hint.message = error;
+      hint.src =
+        "https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/E640808D-48DF-47AB-82CB-73C355872D3E.svg";
     }
     if (!active && pristine && touched) {
-      return "Заполните поле";
+      hint.message = "Заполните поле";
+      hint.src =
+        "https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/0BA349E6-F5AB-4D98-A0F2-3F51DC1C339F.svg";
     }
-    if (!active && !pristine && touched) {
-      return "Заполнено";
+    if (!active && !pristine && touched && !error) {
+      hint.message = "Заполнено";
+      hint.src =
+        "https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/4C69211C-656D-4046-BDB1-231BEDB22781.svg";
     }
+    return hint;
   }
 
   hasErrorClass({ touched, dirty, valid, active }) {
     if (valid && !active && dirty && touched) return "filled";
-    if (!valid || touched) return "error";
+    if (/* !valid &&  */ touched) return "error";
     if (valid && dirty) return "";
     if (dirty) return null;
     return "";
@@ -166,12 +68,18 @@ class AdvForm extends React.Component {
     meta,
     type
   }) => {
+    const { message, src } = this.renderHint(isNecessary, meta);
+    console.log("meta", label, meta);
+    // meta.error = "mistake";
+    // console.log("PROPS", label, this.props);
+    // console.log("MESSAGE", message);
     return (
-      <div className={`field ${label} ${this.hasErrorClass(meta) || ""}`}>
+      <div className={`field ${label} ${this.hasErrorClass(meta)}`}>
         <label className="form-label label-font">{label}</label>
-        <div className={`hint-rigth ${this.hasErrorClass(meta) || ""}`}>
+        <div className={`hint-rigth ${this.hasErrorClass(meta)}`}>
           <label className={`label-hint-font ${this.hasErrorClass(meta)}`}>
-            {this.renderHint(isNecessary, meta)}
+            {<img src={src} alt="" />}
+            {message}
           </label>
           {maxCharacters && !meta.active && meta.pristine && (
             <label className=" char-limit">
@@ -191,11 +99,19 @@ class AdvForm extends React.Component {
         {label === "Текст объявления" && (
           <textarea className="textarea-input" {...input} />
         )}
+        {/* <button
+          type="submit"
+          // disabled={invalid || pristine || submitting}
+          className="ui button-submit"
+        >
+          Подать
+        </button> */}
       </div>
     );
   };
 
   renderSelect = ({ label, children, type, input }) => {
+    // console.log(this.props);
     return (
       <div>
         <label className="label-font" type={type}>
@@ -209,90 +125,44 @@ class AdvForm extends React.Component {
     );
   };
 
-  // fileSelectedHandler = event => {
-  //   console.log(this.props);
-  //   const file = event.target.files[0];
-
-  //   this.getBase64(file).then(base64 => {
-  //     // localStorage["last"] = base64;
-  //     // localStorage[file.name] = base64;
-  //     this.setState({
-  //       selectedFile: base64
-  //     });
-  //     console.debug("file stored", base64);
-  //     console.debug("state", this.state);
-  //   });
-  // this.props.input.onChange = this.state.selectedFile;
-  // };
-
-  // static getBase64 = file => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = error => reject(error);
-  //     try {
-  //       reader.readAsDataURL(file);
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   });
-  // };
-
   render() {
-    const { handleSubmit, submitting, valid, pristine } = this.props;
-    // console.log("ADV FORM props", this.props);
-    // const id = new Date().valueOf();
+    const { handleSubmit, submitting, invalid, pristine } = this.props;
+    console.log("PROPS", this.props);
     return (
       <form onSubmit={handleSubmit} className="ui form-submit error">
         <h1 className="main-title">Подать объявление</h1>
-        {/* <Field
-          name="id"
-          // component={({ input, dirty }) => {
-          //   dirty = true;
-          //   return <input value={id} {...input} />;
-          // }}
-          component={this.renderInput}
-          label="ИД"
-          // isNecessary
-          type="text"
-        /> */}
-
-        {/*   TODO переделать в массив */}
-
-        {/* <Field
-          name="id"
-          label="ID"
-          type="text"
-          component={({ input }) => {
-            console.log(this.props.input);
-            return <input {...input} />;
-          }}
-        /> */}
-
         <Field
           name="title"
+          type="text"
           component={this.renderInput}
           label="Заголовок"
+          validate={[maxLength140, required]}
           isNecessary
           maxCharacters={140}
-          type="text"
         />
         <Field
           name="description"
+          type="text"
           component={this.renderInput}
           label="Текст объявления"
+          validate={maxLength300}
           maxCharacters={300}
-          type="text"
         />
         <Field
           name="phone"
+          type="text"
           component={this.renderInput}
           label="Телефон"
+          validate={required}
           isNecessary
           placeholder="+7 (___) ___ - __ - __"
-          type="text"
         />
-        <Field name="city" component={this.renderSelect} label="Город">
+        <Field
+          name="city"
+          type="text"
+          component={this.renderSelect}
+          label="Город"
+        >
           {cities.map(city => (
             <option
               label={city.name}
@@ -304,118 +174,62 @@ class AdvForm extends React.Component {
             </option>
           ))}
         </Field>
-
         <Field
           name="file"
-          component={
-            FieldFileInput
-            //  <div>
-            //   <input
-            //     // style={{ display: "none" }}
-            //     className="ui button"
-            //     type="file"
-            //     accept=".jpg, .png, .jpeg"
-            //     onChange={this.fileSelectedHandler}
-            //     ref={fileInput => (this.fileInput = fileInput)}
-            //   />
-            //   <img
-            //     style={{ display: "none" }}
-            //     src={this.state.selectedFile}
-            //     alt=""
-            //   />
-            // </div>
-          }
-          // component={({ input }) => (
-          //   <input {...input || "12"} onChange={this.fileSelectedHandler} type="file" />
-          // )}
+          type="file"
+          component={FieldFileInput}
           label="Файл"
-          type="file"
         />
-        {/* 
-        <input
-          // style={{ display: "none" }}
-          className="ui button"
-          type="file"
-          accept=".jpg, .png, .jpeg"
-          onChange={this.fileSelectedHandler}
-          ref={fileInput => (this.fileInput = fileInput)}
-        />
-        <img style={{ display: "none" }} src={this.state.selectedFile} alt="" />
-        <button
-          className="ui button-photo"
-          onClick={e => {
-            e.preventDefault();
-            return this.fileInput.click();
-          }}
-        >
-          Прикрепить фото
-        </button> */}
         <button
           type="submit"
-          disabled={!valid || pristine || submitting}
+          disabled={invalid || pristine || submitting}
           className="ui button-submit"
-
-          //TODO - добавить propTypes, использовать геттер из примера в книге, возможно использовать propTypes
-          // onClick={() => console.log(this.props)}
-          //   onSubmit={e => {
-          //     e.preventDefault();
-          //     console.log(e);
-          //     return this.myHandleSubmit;
-          //   }
-          // }
         >
           Подать
         </button>
-        {/* <FieldArray name="members" component={this.renderMembers} /> */}
       </form>
     );
   }
 }
 
-// const renderField = ({ input, label, type, meta: { touched, error } }) => (
-//   <div>
-//     <label>{label}</label>
-//     <div>
-//       <input {...input} type={type} />
-//       {touched && error && <span>{error}</span>}
-//     </div>
-//   </div>
-// );
-
-// const onSubmit = (values, dispatch) => {
-//   // console.log(values);
-//   alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-//   return dispatch(handleFormSubmit(values));
-// };
-
 const validate = formValues => {
-  const errors = {};
-  // console.log(formValues);
+  const errors = {
+    // file: "mistake"
+  };
 
-  if (formValues.title && formValues.title.length > 140) {
-    errors.title = "Не более 140 символов";
-  }
+  console.log(formValues);
 
-  if (formValues.description && formValues.description.length > 300) {
-    errors.description = "Не более 300 символов";
-  }
-
-  //const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
-
-  // const regExp = /^((\+7|7|8)+([0-9]){10})$/;
-  //DEV MODE
-  // if (formValues.phone && !formValues.phone.toString().match(regExp)) {
-  //   errors.phone = "Неверный формат";
+  // if (
+  //   (formValues.title &&
+  //     formValues.title.trim().length < 1 &&
+  //     formValues.phone &&
+  //     formValues.phone.trim().length < 1) ||
+  //   (!formValues.title && !formValues.phone)
+  // ) {
+  //   errors.file = { file: "mistake" };
+  // } else {
+  //   delete errors.file;
   // }
+
+  // if (formValues.title && formValues.title.length > 140) {
+  //   errors.title = { message: "Не более 140 символов" };
+  // }
+
+  // if (formValues.description && formValues.description.length > 300) {
+  //   errors.description = { message: "Не более 300 символов" };
+  // }
+
+  const regExp = /^((\+7) \(([0-9]){3}\) [0-9]{3}-[0-9]{2}-[0-9]{2})$/;
+  if (formValues.phone && !formValues.phone.toString().match(regExp)) {
+    errors.phone = "Неверный формат";
+  }
 
   return errors;
 };
 
-//TODO .trim() в  функциях
-
 export default reduxForm({
   form: "inputForm",
-  // enableReinitialize: true,
-  // keepDirtyOnReinitialize: true,
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
   validate
 })(AdvForm);

@@ -13,7 +13,7 @@
 .label-hint-font {
   font-family: "SourceSansPro-Regular";
   line-height: 22px;
-  margin-top: -50px;
+  margin-top: -51px;
 }
 .label-hint-font.error {
   color: #fa5e5b;
@@ -243,4 +243,9 @@
 
 .fileName-img-delete-container {
   margin-left: 10px;
+}
+
+.form-submit {
+  display: flex;
+  flex-direction: column;
 }
