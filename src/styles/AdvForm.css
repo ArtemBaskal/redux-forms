@@ -205,6 +205,11 @@
 }
 
 .label-fileName {
+  /* width: 30px; */
+  /* overflow: hidden; */
+  display: flex;
+  position: relative;
+
   height: 18px;
   font-family: SourceSansPro;
   font-size: 14px;
@@ -216,7 +221,7 @@
   color: #2d74da;
 }
 
-.btn-img-delete {
+.label-img-delete {
   font-family: SourceSansPro;
   font-size: 14px;
   font-weight: normal;
@@ -228,6 +233,14 @@
   text-decoration: underline;
   text-decoration-style: dotted;
 }
-.btn-img-delete:hover {
+.label-img-delete:hover {
   cursor: pointer;
+}
+
+.add-photo-container {
+  display: flex;
+}
+
+.fileName-img-delete-container {
+  margin-left: 10px;
 }

@@ -1,6 +1,6 @@
 .adv-item {
   /* background-color: rgb(255, 225, 230); */
-  display: inline;
+  /* display: inline; */
 }
 
 .button-adv {
@@ -25,10 +25,11 @@
 }
 
 .button-delete {
-  margin-top: 14px;
+  /* margin-top: 14px; */
   border-color: #fa5e5b;
   color: #fa5e5b;
   border: solid 1px #fa5e5b;
+  margin: 14px 0 0 0;
 }
 
 .button-adv:hover {
@@ -52,8 +53,7 @@
 }
 
 .button-edit {
-  margin: 153px 0 0 0;
-  /* HARDCODE */
+  margin: 0;
 }
 
 .font-adv {
@@ -69,6 +69,7 @@
 
 .title-adv {
   font-size: 18px;
+  word-wrap: break-word;
   line-height: 1.22;
   color: #1b2834;
   margin-bottom: 2px;
@@ -80,22 +81,38 @@
   margin-bottom: 7px;
 }
 
-.sidebar-adv {
+.right-row-adv-item {
   /* background-color: plum; */
   display: flex;
   flex-direction: column;
-  position: relative;
-  left: 457px;
-  margin-top: -351px;
-  /* HARDCODE */
+  /* position: relative; */
+  /* left: 457px; */
 }
 
 .img-adv {
   width: 332px;
+  /* hardcode */
+  max-height: 250px;
   /* background: #fa4643; */
-  margin-bottom: 78px;
+  /* margin-top: 78px; */
 }
 
-.main-info-adv {
-  display: inline;
+.adv-item-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 78px;
+  /* background-color: #fa5e5b; */
+}
+
+.left-row-adv-item {
+  display: flex;
+  flex-direction: column;
+  width: 332px;
+  margin-right: 103px;
+}
+
+.adv-buttons {
+  /* flex-flow: column; */
+  margin-top: auto;
+  /* flex: 0 1 auto; */
 }

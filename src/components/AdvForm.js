@@ -87,18 +87,25 @@ class FieldFileInput extends React.Component {
         >
           Прикрепить фото
         </button>
-        <img className="img-photo" src={this.state.selectedFile} alt="" />
-        <label className="label-fileName">{this.state.fileName}</label>
-        {this.state.fileName && (
-          <label
-            className="btn-img-delete"
-            onClick={() => {//TODO: ОБЯЗАТЕЛЬНО СДЕЛАТЬ УДАЛЕНИЕ НЕ ТОЛЬКО ВО ВЬЮ
-              this.setState({ selectedFile: null, fileName: null });
-            }}
-          >
-            Удалить
-          </label>
-        )}
+        <div className="add-photo-container">
+          {this.state.selectedFile && (
+            <img className="img-photo" src={this.state.selectedFile} alt="" />
+          )}
+          <div className="fileName-img-delete-container">
+            <label className="label-fileName">{this.state.fileName}</label>
+            {this.state.fileName && (
+              <label
+                className="label-img-delete"
+                onClick={() => {
+                  //TODO: ОБЯЗАТЕЛЬНО СДЕЛАТЬ УДАЛЕНИЕ НЕ ТОЛЬКО ВО ВЬЮ
+                  this.setState({ selectedFile: null, fileName: null });
+                }}
+              >
+                Удалить
+              </label>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
