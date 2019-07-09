@@ -1,9 +1,9 @@
 import React from "react";
 import Adv from "./Adv";
 import { connect } from "react-redux";
-import { handleAdvDelete, handleAdvEdit } from "../actions";
+import { handleAdvDelete, handleAdvEdit } from "../action";
 import { bindActionCreators } from "redux";
-import "../styles/AdvList.css";
+import "../style/AdvList.css";
 
 class AdvList extends React.Component {
   constructor(props) {
@@ -13,12 +13,10 @@ class AdvList extends React.Component {
   }
 
   onItemDelete(title) {
-    console.log(title);
     this.props.handleAdvDelete(title);
   }
 
   onItemEdit(formData) {
-    console.log(formData);
     this.props.handleAdvEdit(formData);
   }
 

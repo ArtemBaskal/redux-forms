@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import cities from "../apis/cities.json";
-import "../styles/AdvForm.css";
-import FieldFileInput from "./FieldFileInput";
+import cities from "../api/cities.json";
+import "../style/AdvForm.css";
+import FieldFileInput from "../field/FieldFileInput";
 
 const maxLength = max => value =>
   value && value.length > max ? `Не более ${max} символов` : undefined;
@@ -17,16 +17,10 @@ class AdvForm extends React.Component {
     this.state = {
       selectedFile: null,
       fileName: null
-      // initialValues: {}
     };
   }
 
-  //TODO - перенести всю валидацию в validate
-  //TODO - вернуть валидацию всех форм при отправке
-
   renderHint(isNecessary, { active, pristine, touched, error }) {
-    // console.log(error);
-
     const hint = { message: null, src: "" };
     if (isNecessary && !active && pristine && !touched) {
       hint.message = "Обязательное поле";
@@ -53,7 +47,7 @@ class AdvForm extends React.Component {
 
   hasErrorClass({ touched, dirty, valid, active }) {
     if (valid && !active && dirty && touched) return "filled";
-    if (/* !valid &&  */ touched) return "error";
+    if (touched) return "error";
     if (valid && dirty) return "";
     if (dirty) return null;
     return "";
@@ -65,25 +59,29 @@ class AdvForm extends React.Component {
     isNecessary,
     maxCharacters,
     placeholder,
-    meta,
-    type
+    type,
+    meta: { pristine, touched, active },
+    meta
   }) => {
     const { message, src } = this.renderHint(isNecessary, meta);
-    console.log("meta", label, meta);
-    // meta.error = "mistake";
-    // console.log("PROPS", label, this.props);
-    // console.log("MESSAGE", message);
+
     return (
-      <div className={`field ${label} ${this.hasErrorClass(meta)}`}>
+      <div className={`${label} ${this.hasErrorClass(meta)}`}>
         <label className="form-label label-font">{label}</label>
         <div className={`hint-rigth ${this.hasErrorClass(meta)}`}>
           <label className={`label-hint-font ${this.hasErrorClass(meta)}`}>
-            {<img src={src} alt="" />}
+            {<img className="img-hint" src={src} alt="" />}
             {message}
           </label>
-          {maxCharacters && !meta.active && meta.pristine && (
-            <label className=" char-limit">
-              Не более {maxCharacters} символов{" "}
+          {maxCharacters && !active && pristine /* && !touched */ && (
+            <label className={`char-limit ${label}`}>
+              {label === "Текст объявления" && (
+                <img
+                  className="img-hint"
+                  src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/39AF4416-C34B-451B-8D7D-E92AF54A4AB1.svg"
+                />
+              )}
+              Не более {maxCharacters} символов
             </label>
           )}
         </div>
@@ -99,25 +97,17 @@ class AdvForm extends React.Component {
         {label === "Текст объявления" && (
           <textarea className="textarea-input" {...input} />
         )}
-        {/* <button
-          type="submit"
-          // disabled={invalid || pristine || submitting}
-          className="ui button-submit"
-        >
-          Подать
-        </button> */}
       </div>
     );
   };
 
   renderSelect = ({ label, children, type, input }) => {
-    // console.log(this.props);
     return (
       <div>
         <label className="label-font" type={type}>
           {label}
         </label>
-        <select {...input} className="ui search dropdown-cities">
+        <select {...input} className="search dropdown-cities">
           <option value="" defaultValue disabled hidden />
           {children}
         </select>
@@ -127,9 +117,8 @@ class AdvForm extends React.Component {
 
   render() {
     const { handleSubmit, submitting, invalid, pristine } = this.props;
-    console.log("PROPS", this.props);
     return (
-      <form onSubmit={handleSubmit} className="ui form-submit error">
+      <form onSubmit={handleSubmit} className="form-submit error">
         <h1 className="main-title">Подать объявление</h1>
         <Field
           name="title"
@@ -193,32 +182,7 @@ class AdvForm extends React.Component {
 }
 
 const validate = formValues => {
-  const errors = {
-    // file: "mistake"
-  };
-
-  console.log(formValues);
-
-  // if (
-  //   (formValues.title &&
-  //     formValues.title.trim().length < 1 &&
-  //     formValues.phone &&
-  //     formValues.phone.trim().length < 1) ||
-  //   (!formValues.title && !formValues.phone)
-  // ) {
-  //   errors.file = { file: "mistake" };
-  // } else {
-  //   delete errors.file;
-  // }
-
-  // if (formValues.title && formValues.title.length > 140) {
-  //   errors.title = { message: "Не более 140 символов" };
-  // }
-
-  // if (formValues.description && formValues.description.length > 300) {
-  //   errors.description = { message: "Не более 300 символов" };
-  // }
-
+  const errors = {};
   const regExp = /^((\+7) \(([0-9]){3}\) [0-9]{3}-[0-9]{2}-[0-9]{2})$/;
   if (formValues.phone && !formValues.phone.toString().match(regExp)) {
     errors.phone = "Неверный формат";

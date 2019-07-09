@@ -1,11 +1,11 @@
 import React from "react";
-import AdvForm from "./AdvForm";
-import AdvList from "./AdvList";
-import "../styles/App.css";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { handleFormSubmit } from "../actions";
+import AdvForm from "./AdvForm";
+import AdvList from "./AdvList";
+import "../style/App.css";
+import { handleFormSubmit } from "../action";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,16 +13,15 @@ class App extends React.Component {
     this.myHandleSubmit = this.myHandleSubmit.bind(this);
   }
   myHandleSubmit(formData) {
-    const { handleFormSubmit, destroy, validate } = this.props;
+    const { handleFormSubmit, destroy } = this.props;
     console.log(formData);
     console.log(this.props);
     handleFormSubmit(formData);
     destroy("inputForm");
-    // validate();
   }
   render() {
     return (
-      <div className="ui container">
+      <div className="container">
         <AdvForm
           onSubmit={this.myHandleSubmit}
           initialValues={this.props.initialValues}
@@ -43,7 +42,6 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       handleFormSubmit,
-      // reset: reduxForm.reset
       destroy: reduxForm.destroy
     },
     dispatch
@@ -58,6 +56,4 @@ App = connect(
 export default reduxForm({
   form: "inputForm",
   enableReinitialize: true,
-  // keepDirtyOnReinitialize: true
-  // onSubmit
 })(App);

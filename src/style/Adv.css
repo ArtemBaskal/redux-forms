@@ -1,6 +1,8 @@
-.adv-item {
-  /* background-color: rgb(255, 225, 230); */
-  /* display: inline; */
+.img-icon {
+  display: flex;
+  position: relative;
+  top: 21px;
+  right: 29px;
 }
 
 .button-adv {

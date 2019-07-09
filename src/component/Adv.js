@@ -1,6 +1,6 @@
 import React from "react";
 import { reduxForm } from "redux-form";
-import "../styles/Adv.css";
+import "../style/Adv.css";
 
 class Adv extends React.Component {
   renderTitle = ({ title, input }) => {
@@ -22,9 +22,8 @@ class Adv extends React.Component {
       onDelete,
       onEdit
     } = this.props;
-    console.log(this.props);
     return (
-      <div /* className="test" */>
+      <div>
         <div className="font-adv test adv-item-container">
           <div className="left-row-adv-item">
             <div className="title-adv">{title}</div>
@@ -40,11 +39,19 @@ class Adv extends React.Component {
           </div>
           <div className="right-row-adv-item">
             <div>
-              <img src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/D2450FB5-1158-4670-B3C1-330C2A443FC2.svg" alt=""/>
+              <img
+                className="img-icon"
+                src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/D2450FB5-1158-4670-B3C1-330C2A443FC2.svg"
+                alt=""
+              />
               {phone}
             </div>
             <div>
-              <img src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/D53DE6FC-2314-4E52-A2EE-24D2B3D09AB1.svg" alt=""/>
+              <img
+                className="img-icon"
+                src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/D53DE6FC-2314-4E52-A2EE-24D2B3D09AB1.svg"
+                alt=""
+              />
               {city || "Город"}
             </div>
             <div className="adv-buttons">

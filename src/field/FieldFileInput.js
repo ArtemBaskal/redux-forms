@@ -41,28 +41,17 @@ export default class FieldFileInput extends React.Component {
   };
 
   render() {
-    // console.log(this.props);
-    // console.log(localStorage);
     return (
       <div>
-        {/* <label>{this.props.label}</label>
-          <div>
-            <input
-              type="file"
-              accept=".jpg, .png, .jpeg"
-              onChange={this.onChange}
-            />
-          </div> */}
         <input
           style={{ display: "none" }}
-          className="ui button"
           type="file"
           accept=".jpg, .png, .jpeg"
           onChange={this.onChange}
           ref={fileInput => (this.fileInput = fileInput)}
         />
         <button
-          className="ui button-photo-select"
+          className="button-photo-select"
           onClick={e => {
             e.preventDefault();
             return this.fileInput.click();
@@ -88,13 +77,6 @@ export default class FieldFileInput extends React.Component {
                 Удалить
               </label>
             )}
-            {/* <button
-              type="submit"
-              // disabled={invalid || pristine || submitting}
-              className="ui button-submit"
-            >
-              Подать
-            </button> */}
           </div>
         </div>
       </div>

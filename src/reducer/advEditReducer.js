@@ -1,4 +1,4 @@
-import { ADV_EDIT } from "../actions/types";
+import { ADV_EDIT } from "../action/type";
 
 export default (state = {}, action) => {
   if (action.type === ADV_EDIT) {

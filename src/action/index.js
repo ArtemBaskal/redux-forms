@@ -1,4 +1,4 @@
-import { FORM_SUBMIT, ADV_DELETE, ADV_EDIT } from "./types";
+import { FORM_SUBMIT, ADV_DELETE, ADV_EDIT } from "./type";
 
 export const handleFormSubmit = data => {
   console.log("from handleFormSubmit action", data);

@@ -1,3 +1,10 @@
+.img-hint {
+  display: flex;
+  position: relative;
+  top: 19px;
+  right: 23px;
+}
+
 .form-submit {
   display: flex;
   flex-direction: column;
@@ -7,7 +14,7 @@
   font-family: "SourceSansPro-Regular";
   color: #68717c;
   line-height: 22px;
-  margin-top: -50px;
+  margin-top: -51px;
 }
 
 .label-hint-font {
@@ -57,8 +64,8 @@
 }
 
 .form-label {
-  /* display: flex;
-  margin-top: 50px; */
+  /* display: block; */
+  margin-bottom: 8px;
 }
 
 /* .label-hint {
@@ -79,10 +86,15 @@
 .hint-rigth.error {
   color: #fa5e5b;
 }
-
 .char-limit {
   line-height: 22px;
 }
+
+.char-limit.Текст {
+  line-height: 22px;
+  margin-top: -20px;
+}
+
 /* 
 .error {
   color: #fa5e5b;

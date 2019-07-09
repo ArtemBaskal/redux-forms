@@ -1,10 +1,11 @@
-import { FORM_SUBMIT, ADV_DELETE } from "../actions/types";
+import { FORM_SUBMIT, ADV_DELETE } from "../action/type";
 
 export default (state = {}, action) => {
   let id = new Date().valueOf();
   if (action.type === FORM_SUBMIT) {
     console.log("reducer FORM_SUBMIT state", state);
     console.log("reducer FORM_SUBMIT action", action);
+    if (!action.payload.title && !action.payload.phone) return state;
 
     action.payload.id = id++;
 
