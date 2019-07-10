@@ -60,7 +60,7 @@ class AdvForm extends React.Component {
     maxCharacters,
     placeholder,
     type,
-    meta: { pristine, touched, active },
+    meta: { pristine, active },
     meta
   }) => {
     const { message, src } = this.renderHint(isNecessary, meta);
@@ -73,14 +73,14 @@ class AdvForm extends React.Component {
             {<img className="img-hint" src={src} alt="" />}
             {message}
           </label>
-          {maxCharacters && !active && pristine /* && !touched */ && (
+          {maxCharacters && !active && pristine && (
             <label className={`char-limit ${label}`}>
-              {label === "Текст объявления" && (
+              {/* {label === "Текст объявления" && (
                 <img
                   className="img-hint"
                   src="https://cdn.zeplin.io/5bbcbd7440563d18f3502b98/assets/39AF4416-C34B-451B-8D7D-E92AF54A4AB1.svg"
                 />
-              )}
+              )} */}
               Не более {maxCharacters} символов
             </label>
           )}

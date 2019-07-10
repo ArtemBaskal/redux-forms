@@ -16,7 +16,6 @@ export default class FieldFileInput extends React.Component {
 
   onChange(e) {
     this.getBase64(e.target.files[0]).then(base64 => {
-      console.log(base64);
       this.props.input.onChange(base64.file);
       this.setState({
         selectedFile: base64.file,
@@ -27,7 +26,6 @@ export default class FieldFileInput extends React.Component {
 
   getBase64 = file => {
     return new Promise((resolve, reject) => {
-      console.log(file);
       const reader = new FileReader();
       reader.onload = () =>
         resolve({ file: reader.result, fileName: file.name });
@@ -70,7 +68,6 @@ export default class FieldFileInput extends React.Component {
               <label
                 className="label-img-delete"
                 onClick={() => {
-                  //TODO: ОБЯЗАТЕЛЬНО СДЕЛАТЬ УДАЛЕНИЕ НЕ ТОЛЬКО ВО VIEW
                   this.setState({ selectedFile: null, fileName: null });
                 }}
               >

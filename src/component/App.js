@@ -14,8 +14,6 @@ class App extends React.Component {
   }
   myHandleSubmit(formData) {
     const { handleFormSubmit, destroy } = this.props;
-    console.log(formData);
-    console.log(this.props);
     handleFormSubmit(formData);
     destroy("inputForm");
   }

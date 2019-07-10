@@ -1,8 +1,7 @@
 .img-hint {
-  display: flex;
   position: relative;
-  top: 19px;
-  right: 23px;
+  top: 2.5px;
+  right: 4px;
 }
 
 .form-submit {
@@ -18,9 +17,10 @@
 }
 
 .label-hint-font {
-  font-family: "SourceSansPro-Regular";
-  line-height: 22px;
   margin-top: -51px;
+  margin-left: 4px;
+  position: relative;
+  right: 23px;
 }
 .label-hint-font.error {
   color: #fa5e5b;
@@ -43,34 +43,22 @@
 }
 
 .form-input {
-  margin: 8px 100% 29px 0;
+  margin: 8px 24px 29px 0;
   padding: 0 16px;
   width: 376px;
   height: 34px;
-  /* border-style: solid; */
   border-radius: 3px;
-  /* object-fit: contain; */
   box-shadow: inset 0 0 3px 0 rgba(27, 40, 52, 0.08);
   border: solid 1px #d4d8db;
   background-color: rgba(27, 40, 52, 0.01);
   font-family: SourceSansPro;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #68717c;
 }
 
 .form-label {
-  /* display: block; */
   margin-bottom: 8px;
 }
-
-/* .label-hint {
-  line-height: 22px;
-} */
 
 .hint-rigth {
   display: flex;
@@ -79,8 +67,6 @@
   left: 457px;
   top: 54px;
   color: #68717c;
-  /* margin-left: 457px;
-  margin-top: 127px; */
 }
 
 .hint-rigth.error {
@@ -92,18 +78,12 @@
 
 .char-limit.Текст {
   line-height: 22px;
-  margin-top: -20px;
 }
-
-/* 
-.error {
-  color: #fa5e5b;
-} */
 
 .textarea-input {
   width: 376px;
   height: 131px;
-  margin: 8px 100% 29px 0;
+  margin: 8px 24px 29px 0;
   padding: 7px 16px;
   object-fit: contain;
   border-radius: 3px;
@@ -113,11 +93,6 @@
   resize: none;
   font-family: SourceSansPro;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #68717c;
   overflow: hidden;
 }
@@ -125,8 +100,7 @@
 .button-photo-select {
   width: 178px;
   height: 36px;
-  margin-top: 32px;
-  margin-bottom: 23px;
+  margin-bottom: 29px;
   border-color: #2d74da;
   color: #2d74da;
   border-radius: 3px;
@@ -161,86 +135,42 @@
 }
 
 .dropdown-cities {
-  /* -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-   */
   width: 410px;
   height: 36px;
   border-radius: 3px;
   margin: 12px 100% 32px 0;
   padding: 8px 0 9px 15px;
   color: #68717c;
-
-  /* color:#fff;
-  background:#369; */
 }
 
-/* .city-select:hover {
-  box-shadow: 0 0 10px 100px #1882a8 inset;
-} */
-/* .city-select {
-  color: blue;
-} */
 .city-option {
-  /* color: red; */
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
   border: solid 1px #d4d8db;
   font-size: 20px;
   font-family: SourceSansPro;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  /* color: #68717c; */
 }
-
-/* .select-selected:after {
-  background-color: red;
-} */
-
-/* .img-adv {
-  display: none;
-} */
-
-/* .city-select {
-} */
 
 .img-photo {
   display: block;
   width: 69px;
   height: 52px;
   padding-bottom: 23px;
-  /* background-color: pink; */
 }
 
 .label-fileName {
-  /* width: 30px; */
-  /* overflow: hidden; */
   display: flex;
   position: relative;
 
   height: 18px;
   font-family: SourceSansPro;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #2d74da;
 }
 
 .label-img-delete {
   font-family: SourceSansPro;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: #fa5e5b;
   text-decoration: underline;
   text-decoration-style: dotted;
