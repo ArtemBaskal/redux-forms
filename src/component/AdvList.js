@@ -22,21 +22,33 @@ class AdvList extends React.Component {
 
   render() {
     //В localStorage данные хранятся в случайном порядке, поэтому сортирует их по убыванию ID
-    const sortedParsedList = Object.values(localStorage)
-      .map(adv => JSON.parse(adv))
-      .sort((adv1, adv2) => adv2.id - adv1.id);
+    let sortedParsedList;
+    try {
+      sortedParsedList = Object.values(localStorage)
+        .map(adv => {
+          return JSON.parse(adv);
+        })
+        .sort((adv1, adv2) => adv2.id - adv1.id);
+    } catch (e) {
+      alert(
+        "Ошибка! Неверный формат элемента (нестроковый тип) в localStorage. Оно будет очищено."
+      );
+      console.log(e);
+      localStorage.clear();
+      sortedParsedList = [];
+    }
     return (
       <div className="adv">
         <h1 className="adv-title">Объявление</h1>
-        {sortedParsedList.map(advItem => {
+        {sortedParsedList.map(adv => {
           return (
             <Adv
-              key={advItem.title}
-              title={advItem.title}
-              description={advItem.description || null}
-              phone={advItem.phone}
-              city={advItem.city || null}
-              src={advItem.file || null}
+              key={adv.title}
+              title={adv.title}
+              description={adv.description || null}
+              phone={adv.phone}
+              city={adv.city || null}
+              src={adv.file || null}
               onDelete={this.onItemDelete}
               onEdit={this.onItemEdit}
             />
